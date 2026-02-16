@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Học Tiếng Nhật Của Tôi</title>
+    <!-- Google Fonts: Yuji Syuku (Japanese Calligraphy) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
     <style>
         /* --- CSS: Giao diện --- */
         :root {
@@ -55,6 +59,27 @@
             flex: 1;
             overflow-y: auto;
             padding: 10px;
+            /* Smooth scrolling */
+            scroll-behavior: smooth;
+            /* Firefox Scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: #bdc3c7 #f1f1f1;
+        }
+
+        /* Custom Scrollbar */
+        .list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .list-container::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 4px;
+        }
+        .list-container::-webkit-scrollbar-thumb:hover {
+            background: #95a5a6;
         }
 
         .list-item {
@@ -94,11 +119,34 @@
             width: calc(100% - var(--sidebar-width));
         }
 
-        h1 { color: var(--primary-color); margin-bottom: 10px; }
+        h1 { 
+            color: white; 
+            background-color: #ff4757; /* Màu nền đỏ như yêu cầu */
+            margin-bottom: 0px; /* Sát luôn (10px -> 0px) */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Quay về font mặc định */
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px 30px;
+            display: inline-block;
+            border-radius: 25px; /* Bo tròn pill shape */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Căn giữa tiêu đề */
+        .header-container {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 35px; /* Cách ra khoảng 10mm theo yêu cầu */
+            position: relative;
+            z-index: 10;
+        }
 
         /* Khu vực Flashcard */
         .flashcard-section {
-            margin-top: 20px;
+            margin-top: 0px;
             text-align: center;
             width: 100%;
             display: flex;
@@ -108,9 +156,9 @@
         }
 
         .card-container {
-            width: 300px;
+            width: 320px; /* Giảm thêm (340 -> 320) */
             max-width: 90vw;
-            height: 380px; /* Tăng chiều cao để chứa Tab */
+            height: 500px; /* Giảm thêm chiều cao tương ứng */
             perspective: 1000px;
             margin-bottom: 20px;
         }
@@ -148,10 +196,16 @@
         }
 
         .card-front { 
-            font-size: 2.5rem; 
+            font-size: 2.2rem; /* Tăng cỡ chữ lên một chút (khoảng 35px) */
             color: #2f3542; 
             padding: 15px;
             /* background-color: #e3f2fd; Removed: Background applied to text span only */
+        }
+        
+        /* Chế độ Kanji hiển thị chữ to */
+        .card-front.kanji-mode {
+            font-size: 5rem;
+            font-family: 'Yuji Syuku', serif;
         }
         
         .kanji-bg {
@@ -168,6 +222,26 @@
             font-style: italic;
             color: #e67e22; /* Orange color */
             font-weight: 500;
+        }
+
+        .card-header-brand {
+            position: absolute;
+            top: 30px;
+            font-size: 1.2rem;
+            font-weight: normal;
+            color: #2f3542; /* Màu chữ đậm cho giống mực tàu */
+            font-family: 'Yuji Syuku', serif; /* Font thư pháp Nhật */
+            
+            /* Background giấy Washi đơn giản */
+            background: #fdfdfd;
+            padding: 8px 25px;
+            border-radius: 25px; /* Bo tròn nhiều hơn (4px -> 25px) */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            
+            text-transform: none;
+            letter-spacing: 2px;
+            text-shadow: none;
         }
         
         .card-back {
@@ -216,17 +290,24 @@
         .tab-content.active { display: block; }
         
         /* Nội dung Tab Thông tin */
-        .word-reading { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); text-align: center; margin-bottom: 10px; }
-        .word-mean { font-size: 1.2rem; margin-bottom: 15px; text-align: center; font-weight: 500; }
+        .word-reading { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); text-align: center; margin-bottom: 8px; }
+        .word-mean { font-size: 1rem; margin-bottom: 12px; text-align: center; font-weight: 500; }
         .word-example { 
-            font-size: 0.95rem; 
-            margin-top: 15px; 
+            font-size: 0.85rem; 
+            margin-top: 12px; 
             font-style: italic !important; 
             background: #ffcdd2; /* Đỏ rõ hơn (Red 100) */
             color: #b71c1c; /* Chữ đỏ đậm cho hợp tông */
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
             border-left: 4px solid #d32f2f;
+        }
+        
+        /* Make grammar examples smaller too if needed */
+        .grammar-example-text {
+            font-size: 0.8rem !important;
+            padding: 8px !important;
+            margin-top: 5px !important;
         }
 
         /* Nội dung Tab Ghi chú */
@@ -252,18 +333,18 @@
         }
         
         .jp-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
+            width: 35px;
+            height: 35px;
+            border-radius: 6px;
             border: 2px solid #ddd;
             background: white;
-            font-size: 2rem;
+            font-size: 1.2rem;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 0 #ddd;
+            box-shadow: 0 2px 0 #ddd;
         }
         
         .jp-btn:active {
@@ -309,15 +390,15 @@
             text-decoration: underline;
         }
 
-        /* Navigation Arrows (Floating) */
+        /* Navigation Arrows (Floating Inside) */
         .nav-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: white;
-            border: 2px solid #ddd;
-            width: 45px;
-            height: 45px;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent */
+            border: 1px solid #ddd;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -325,8 +406,8 @@
             font-size: 1.2rem;
             color: var(--secondary-color);
             cursor: pointer;
-            z-index: 10;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 20; /* Higher than card content */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: 0.2s;
             user-select: none;
         }
@@ -335,22 +416,26 @@
             background: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
+            opacity: 1;
         }
 
         .nav-arrow:active { transform: translateY(-50%) scale(0.9); }
 
-        /* Vị trí sát khung đỏ (cách 55px từ mép container) */
-        .nav-arrow.left { left: -55px; }
-        .nav-arrow.right { right: -55px; }
+        /* Vị trí nằm trong khung (cách 10px từ mép trong) */
+        .nav-arrow.left { left: 10px; }
+        .nav-arrow.right { right: 10px; }
 
         /* Responsive Arrows */
         @media (max-width: 500px) {
-            /* Thu nhỏ card một chút để chừa chỗ cho mũi tên */
-            .card-container { max-width: 75vw; } 
+            /* Reset max-width để card to ra lại vì mũi tên đã vào trong */
+            .card-container { max-width: 90vw; } 
             
-            .nav-arrow { width: 35px; height: 35px; font-size: 1rem; }
-            .nav-arrow.left { left: -40px; }
-            .nav-arrow.right { right: -40px; }
+            .nav-arrow { 
+                width: 35px; height: 35px; font-size: 1rem; 
+                background: rgba(255, 255, 255, 0.6);
+            }
+            .nav-arrow.left { left: 5px; }
+            .nav-arrow.right { right: 5px; }
         }
 
         .action-group {
@@ -441,43 +526,119 @@
 
         /* Test Modal Styles */
         .test-container {
-            text-align: center;
+            text-align: left;
+            padding: 10px;
+        }
+        .test-item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #eee;
         }
         .test-question {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #2f3542;
+            margin-bottom: 15px;
             font-weight: bold;
+            line-height: 1.6;
+        }
+        .test-word-underline {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-decoration-color: #2f3542;
+            padding-bottom: 2px;
+            font-weight: 900;
         }
         .test-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 15px;
-            margin-bottom: 20px;
         }
         .test-option {
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 6px; /* Giảm padding (10px -> 6px) */
+            border: 1px solid #ddd;
+            border-radius: 4px;
             background: white;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 0.85rem; /* Giảm font size (0.95rem -> 0.85rem) */
             transition: 0.2s;
-            color: #2f3542;
+            color: #57606f;
+            display: flex;
+            align-items: center;
+            min-height: 30px; /* Đảm bảo chiều cao tối thiểu nhỏ gọn */
+        }
+        .test-option::before {
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            min-width: 12px; /* Đảm bảo không bị méo */
+            min-height: 12px;
+            border-radius: 50%;
+            border: 2px solid #bdc3c7;
+            margin-right: 8px;
+            flex-shrink: 0; /* Quan trọng: Ngăn bị co lại khi text dài */
         }
         .test-option:hover {
             background-color: #f1f2f6;
-            border-color: #ccc;
+        }
+        .test-option.selected::before {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
         }
         .test-option.correct {
-            background-color: var(--success-color);
-            color: white;
-            border-color: var(--success-color);
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-color: #a5d6a7;
         }
         .test-option.wrong {
-            background-color: var(--danger-color);
+            background-color: #ffebee;
+            color: #c62828;
+            border-color: #ef9a9a;
+        }
+        .test-score-sticky {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px;
+            border-bottom: 2px solid #eee;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .test-submit-btn {
+            background: var(--primary-color);
             color: white;
-            border-color: var(--danger-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Explanation Box in Test */
+        .test-explanation {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #f1f2f6;
+            border-left: 4px solid var(--warning-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #2f3542;
+            animation: fadeIn 0.5s;
+        }
+        .test-explanation strong { color: var(--primary-color); }
+        .explain-row { margin-bottom: 5px; }
+        .explain-label { font-weight: bold; margin-right: 5px; color: #57606f; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Test Grid */
+        @media (max-width: 600px) {
+            .test-grid { grid-template-columns: 1fr 1fr; }
         }
         .test-score {
             font-size: 1.2rem;
@@ -493,7 +654,9 @@
             font-size: 0.95rem;
             text-align: center;
             font-weight: 500;
+            cursor: pointer;
         }
+        .footer-slogan:hover { text-decoration: underline; color: var(--primary-color); }
 
         .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #57606f; }
@@ -513,6 +676,41 @@
         /* Bộ đếm */
         .counter { margin-top: 5px; font-weight: bold; color: #57606f; font-size: 0.9rem; }
         
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            min-width: 250px;
+            background-color: #2f3542;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease-out forwards;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            opacity: 0;
+            pointer-events: auto;
+        }
+        .toast.show { opacity: 1; }
+        .toast.success { border-left: 5px solid #2ed573; }
+        .toast.error { border-left: 5px solid #ff4757; }
+        .toast.info { border-left: 5px solid #1e90ff; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
         /* Responsive Mobile */
         @media (max-width: 600px) {
             body { flex-direction: column; }
@@ -522,14 +720,344 @@
             .main-content { margin-left: 0; width: 100%; padding: 10px; box-sizing: border-box; }
             .sidebar.mobile-open .list-container { display: block; height: 200px; }
         }
+        .sidebar-tabs {
+            display: flex;
+            background: #dfe4ea;
+            padding: 5px;
+            gap: 5px;
+        }
+        .sidebar-tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #57606f;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .sidebar-tab.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Grammar Styles */
+        .grammar-block {
+            text-align: left;
+            font-size: 0.8rem; /* Smaller font size as requested */
+            color: #57606f;
+            width: 100%;
+        }
+        .grammar-item {
+            margin-bottom: 5px;
+            padding: 5px 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .grammar-item strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        /* Make grammar examples smaller too if needed */
+        .grammar-example-text {
+            font-size: 0.8rem !important;
+            padding: 8px !important;
+            margin-top: 5px !important;
+        }
+        .grammar-structure {
+            border-left: 4px solid #a55eea;
+            background: #f3e5f5;
+        }
+        .grammar-mean {
+            border-left: 4px solid #2ed573;
+            background: #e8f5e9;
+        }
+        .grammar-explain {
+            border-left: 4px solid #ffa502;
+            background: #fff3e0;
+        }
+
+        /* --- KANJI CARD LAYOUT (New Split Design) --- */
+        .kanji-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .kanji-top {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            flex: 0 0 auto; /* Auto height based on content, or fixed? */
+            border-bottom: 2px solid #eee; /* Horizontal Gray Divider */
+            min-height: 180px; /* Ensure enough space for Kanji */
+        }
+
+        .kanji-middle {
+            width: 100%;
+            flex: 0 0 auto;
+            border-bottom: none;
+            padding: 10px 15px;
+            text-align: left;
+            background: #fff;
+        }
+
+        .kanji-middle-title {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #7f8c8d;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: block; /* Make it block to match vocabulary label */
+            border-bottom: none; /* Remove underline */
+        }
+
+        .kanji-middle-content {
+            font-size: 0.8rem;
+            color: #2f3542;
+            line-height: 1.8;
+        }
+
+        .kanji-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            border-right: 2px solid #eee; /* Vertical Gray Divider */
+            padding: 10px;
+        }
+
+        .kanji-char-large {
+            font-size: 7rem; /* Large Kanji */
+            font-family: 'Yuji Syuku', serif;
+            color: #2f3542;
+            line-height: 1;
+        }
+
+        .kanji-right {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: left;
+            padding: 15px;
+            gap: 8px;
+        }
+
+        .kanji-mean-header {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2f3542;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .kanji-info-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 1rem;
+            color: #57606f;
+        }
+
+        .kanji-label {
+            font-weight: bold;
+            color: #a4b0be;
+            min-width: 40px;
+            font-size: 0.9rem;
+        }
+
+        .kanji-reading {
+            font-weight: 500;
+            color: #2f3542;
+            word-break: break-word;
+        }
+
+        .kanji-bottom {
+            flex: 1;
+            padding: 15px;
+            text-align: left;
+            overflow-y: auto;
+            width: 100%;
+            background-color: #fff;
+        }
+
+        .kanji-bottom div:not(.kanji-label) {
+             /* Style cho danh sách từ vựng */
+             margin-bottom: 5px; /* Giãn cách giữa các dòng */
+        }
+        
+        .kanji-bottom::-webkit-scrollbar { width: 4px; }
+        .kanji-bottom::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+        .kanji-radicals {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .radical-box {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            color: #57606f;
+            background: white;
+        }
+
+        /* Responsive Kanji Layout */
+        @media (max-width: 500px) {
+            .kanji-top { flex-direction: row; } /* Keep row on mobile for this design */
+            .kanji-char-large { font-size: 5rem; }
+            .kanji-mean-header { font-size: 1.4rem; }
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        .mobile-menu-btn {
+            display: none; /* Ẩn nút menu 3 gạch */
+        }
+
+        .sidebar-overlay {
+            display: none; /* Không cần overlay nữa */
+        }
+
+        /* Responsive Mobile Layout Modification */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column; /* Xếp dọc: Sidebar trên, Main dưới */
+            }
+
+            .sidebar {
+                position: relative; /* Không còn fixed nữa */
+                transform: none; /* Luôn hiển thị */
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 2px solid #ddd;
+                z-index: 50;
+                box-shadow: none;
+            }
+
+            .sidebar-header {
+                padding: 5px; /* Giảm padding */
+            }
+            .sidebar-header h2 { font-size: 1rem; } /* Giảm cỡ chữ */
+
+            .sidebar-tabs {
+                padding: 2px; /* Giảm padding */
+            }
+            .sidebar-tab {
+                padding: 5px 0; /* Giảm padding */
+                font-size: 0.85rem; /* Giảm cỡ chữ */
+            }
+
+            .list-container {
+                display: none; /* Mặc định ẩn danh sách */
+                height: auto;
+                max-height: 50vh; /* Tăng chiều cao tối đa lên 50% màn hình */
+                overflow-y: auto;
+                background: #f1f2f6;
+                border-bottom: 2px solid #ddd;
+                animation: slideDown 0.3s ease-out;
+            }
+            .list-container.expanded {
+                display: block; /* Hiện khi toggle */
+            }
+
+            @keyframes slideDown {
+                from { max-height: 0; opacity: 0; }
+                to { max-height: 50vh; opacity: 1; }
+            }
+            
+            /* Thêm mũi tên chỉ thị cho header */
+            .sidebar-header {
+                padding: 8px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+            }
+            .sidebar-header::after {
+                content: '▼';
+                font-size: 0.8rem;
+                transition: 0.3s;
+            }
+            .sidebar-header.expanded::after {
+                transform: rotate(180deg);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 5px;
+                padding-top: 5px; 
+                height: calc(100vh - 100px); /* Cố gắng fit màn hình */
+                justify-content: flex-start; /* Đẩy lên trên */
+            }
+
+            .card-container {
+                width: 100%;
+                max-width: 300px; /* Thu nhỏ thêm */
+                height: 480px; /* Giữ chiều cao tương đối */
+                margin-bottom: 10px;
+            }
+            
+            /* Ẩn bớt các thành phần thừa */
+            .header-container { display: none; } /* Ẩn tiêu đề lớn */
+            .status-label { display: none; } /* Ẩn dòng hướng dẫn */
+            
+            .flashcard-section {
+                margin-top: 5px;
+            }
+
+            /* Compact Action Buttons */
+            .action-group {
+                margin-top: 10px;
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 2 cột */
+                gap: 8px;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            button {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+            
+            h1 { font-size: 1rem; padding: 5px 15px; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header" onclick="toggleSidebar()">
             <h2>📚 Danh sách bài học</h2>
+        </div>
+        <div class="sidebar-tabs">
+            <div class="sidebar-tab active" onclick="switchCategory('vocabulary')">Từ vựng</div>
+            <div class="sidebar-tab" onclick="switchCategory('kanji')">Kanji</div>
+            <div class="sidebar-tab" onclick="switchCategory('grammar')">Ngữ pháp</div>
+            <div class="sidebar-tab" onclick="openHelpModal()" style="background: #dfe6e9; color: #2d3436;">Help</div>
         </div>
         <div class="list-container" id="listContainer">
             <!-- List items will be injected here -->
@@ -538,7 +1066,9 @@
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-        <h1 id="listTitle">JLPT Flashcards 🇯🇵</h1>
+        <div class="header-container">
+            <h1 id="listTitle">JLPT Flashcards 🇯🇵</h1>
+        </div>
 
         <div class="flashcard-section">
             <div class="card-container">
@@ -549,8 +1079,9 @@
                 <div class="card" id="card">
                     <!-- Mặt trước: Chỉ có Kanji -->
                     <div class="card-face card-front" onclick="flipCard()">
+                        <div class="card-header-brand" id="cardBrand">千里の道も一歩から</div>
                         <span id="frontText" class="kanji-bg">先生</span>
-                        <div class="card-slogan">"継続は力なり"</div>
+                        <div class="card-slogan" onclick="AdminManager.open(); event.stopPropagation();" title="Quản lý kết quả">"継続は力なり"</div>
                     </div>
                     
                     <!-- Mặt sau: Có Tabs -->
@@ -564,12 +1095,12 @@
                         <div class="tab-content active" id="tabInfo">
                             <div class="word-reading" id="displayReading">Sensei</div>
                             <div class="word-mean" id="displayMean">(Giáo viên)</div>
-                            <div class="word-example" id="displayExample">Ví dụ: 先生は親切です。</div>
+                            <div class="word-example" id="displayExample" class="word-example">Ví dụ: 先生は親切です。</div>
                         </div>
                         
                         <!-- Tab Ghi chú -->
                         <div class="tab-content" id="tabNote">
-                            <textarea class="note-input" id="noteInput" placeholder="Ghi chú của bạn cho từ này..." onchange="saveNote()" onclick="event.stopPropagation()"></textarea>
+                            <textarea class="note-input" id="noteInput" placeholder="Ghi chú của bạn cho từ này..." oninput="saveNote()" onclick="event.stopPropagation()"></textarea>
                         </div>
                         <div class="card-slogan">"継続は力なり"</div>
                     </div>
@@ -587,9 +1118,10 @@
             <div class="counter" id="wordCounter">Từ 1 / 7</div>
 
             <div class="action-group">
-                <button class="btn-import" onclick="openBulkModal()">+ Import nhiều từ</button>
+                <button class="btn-import" onclick="ImportManager.openModal()">+ Import nhiều từ</button>
                 <button class="btn-review" onclick="filterReviewWords()">⚠ Ôn tập (Δ & X)</button>
-                <button class="btn-secondary" onclick="startTestMode()" style="background: #a55eea; color: white;">✎ Làm bài kiểm tra</button>
+                <button class="btn-secondary" onclick="TestManager.start()" style="background: #a55eea; color: white;">✎ Làm bài kiểm tra</button>
+                <button class="btn-secondary" onclick="shuffleWords()" style="background: #2f3542; color: white;">🔀 Xáo trộn</button>
                 <button class="btn-secondary" onclick="resetFilter()" id="btnResetFilter" style="display:none">Hiện tất cả</button>
             </div>
         </div>
@@ -634,283 +1166,1448 @@
     <!-- Modal Import Nhiều Từ -->
     <div class="modal-overlay" id="bulkModal">
         <div class="modal-content">
-            <h3>Import Danh Sách Từ Vựng</h3>
+            <h3>Import Danh Sách</h3>
+            <div class="input-group">
+                <label>Loại bài học:</label>
+                <select id="importCategoryInput" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                    <option value="vocabulary">Từ vựng (Vocabulary)</option>
+                    <option value="kanji">Hán tự (Kanji)</option>
+                    <option value="grammar">Ngữ pháp (Grammar)</option>
+                </select>
+            </div>
             <div class="input-group">
                 <label>Tên danh sách (Bài học):</label>
                 <input type="text" id="listNameInput" placeholder="Ví dụ: Bài 1 - Kinh tế">
             </div>
             <div class="help-text">
-                <strong>Định dạng hỗ trợ:</strong><br>
-                1. <code>Kanji | Kana | Nghĩa</code><br>
-                2. <code>Kanji (Kana),Nghĩa</code><br>
-                3. <code>Kanji Kana = Nghĩa</code><br>
-                <em>(Hỗ trợ dán nhiều ví dụ: Dùng số 1, 2... ở đầu dòng)</em>
+                <div style="margin-bottom: 5px; cursor: pointer; color: var(--primary-color); font-weight: bold;" onclick="toggleHelp()">
+                    ❓ Hướng dẫn nhập dữ liệu (Bấm để xem)
+                </div>
+                <div id="helpContent" style="display: none; margin-top: 10px;">
+                    <strong>1. Từ vựng & Kanji (Cơ bản):</strong><br>
+                    <code>Kanji | Kana | Nghĩa | Ví dụ</code><br>
+                    <em>Ví dụ: 先生 | せんせい | Giáo viên | 先生は親切です。</em><br><br>
+                    
+                    <strong>2. Ngữ pháp (Nâng cao):</strong><br>
+                    Copy & Paste trực tiếp từ tài liệu với định dạng sau:<br>
+                    <pre style="background: #eee; padding: 10px; border-radius: 5px; font-size: 0.85rem; overflow-x: auto; white-space: pre-wrap;">
+Mặt trước: ～とはいえ
+Mặt sau:
+Cấu trúc: Danh từ / Thể thông thường + とはいえ
+Ý nghĩa: "Tuy nói là... nhưng thực tế là...".
+Giải thích: Dùng để thừa nhận vế A là sự thật...
+Ví dụ:
+休みとはいえ、家事で一日中忙しい。
+(Tuy nói là ngày nghỉ nhưng tôi vẫn bận rộn...)</pre>
+                    <em>(Hệ thống sẽ tự động nhận diện cấu trúc, ý nghĩa và ví dụ)</em><br><br>
+                    
+                    <strong>3. Kanji (Layout mới):</strong><br>
+                    Copy & Paste trực tiếp từ tài liệu với định dạng sau:<br>
+                    <pre style="background: #eee; padding: 10px; border-radius: 5px; font-size: 0.85rem; overflow-x: auto; white-space: pre-wrap;">
+Chữ TOẠI (遂)
+Âm Hán Việt: TOẠI
+ON: スイ
+Kun: と.げる
+Từ vựng:
+遂行 (すいこう): thực hiện
+未遂 (みすい): chưa thành
+自殺未遂 (じさつみすい): tự sát không thành
+目的を遂げる (もくてきをとげる): đạt mục đích
+任務を遂行する (にんむをすいこうする): hoàn thành nhiệm vụ</pre>
+                    <em>(Hệ thống tự động nhận diện Kanji, Âm đọc và danh sách từ vựng - Không bắt buộc số thứ tự)</em><br><br>
+
+                    <strong>4. Kanji (Cơ bản 1 dòng):</strong><br>
+                    <code>Kanji | Âm On | Âm Kun | Nghĩa | Bộ thủ | Số nét</code><br>
+                    <em>Ví dụ: 崎 | キ | さき、さい、みさき | Mũi đất | 山 | 11</em><br>
+                </div>
             </div>
+
             <div class="input-group">
                 <label>Dán danh sách từ vựng tại đây:</label>
                 <textarea id="bulkInput" rows="8" placeholder="Dán danh sách từ của bạn vào đây..."></textarea>
             </div>
             <div class="modal-buttons">
                 <button class="btn-secondary" onclick="closeModal('bulkModal')">Hủy</button>
-                <button onclick="processBulkImport()">Lưu & Import</button>
+                <button onclick="ImportManager.process()">Lưu & Import</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Import Data -->
+    <div class="modal-overlay" id="importDataModal">
+        <div class="modal-content">
+            <h3>📥 Nhập dữ liệu kết quả</h3>
+            <div class="input-group">
+                <label>Dán dữ liệu vào đây:</label>
+                <textarea id="importDataInput" rows="5" placeholder='[{"id":"123",...}]'></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="closeModal('importDataModal')">Hủy</button>
+                <button onclick="AdminManager.submitImport()">Nhập dữ liệu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Admin / Quản lý Kết quả -->
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <h3>📊 Quản lý Kết quả Kiểm tra</h3>
+            <div style="text-align: right; margin-bottom: 10px;">
+                <button class="btn-secondary" onclick="AdminManager.export()" style="font-size: 0.9rem;">📋 Xuất dữ liệu (Copy)</button>
+                <button class="btn-import" onclick="AdminManager.openImportModal()" style="font-size: 0.9rem;">📥 Nhập dữ liệu</button>
+                <button class="btn-secondary" onclick="AdminManager.clear()" style="background: #ff4757; color: white; font-size: 0.9rem;">🗑 Xóa tất cả</button>
+            </div>
+            <div class="review-list" id="resultListContainer" style="max-height: 400px;">
+                <!-- Results will be injected here -->
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="closeModal('adminModal')">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Help / Hướng dẫn -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-content" style="max-width: 800px; text-align: left; font-family: 'Times New Roman', serif;">
+            <h3 style="text-align: center; font-size: 1.3rem; color: var(--primary-color);">📖 Hướng dẫn sử dụng</h3>
+            <div style="margin-bottom: 15px; font-style: italic; color: #555; font-size: 1rem; text-align: center;">
+                Hãy nhập nội dung sau vào ChatGPT để tạo dữ liệu chuẩn cho ứng dụng:
+            </div>
+            <div style="max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+                
+                <strong style="font-size: 1.1rem; color: #2f3542;">1. Mẫu Từ vựng:</strong><br>
+                <pre style="background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 0.95rem; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; border: 1px solid #ddd; font-family: 'Consolas', 'Courier New', monospace;">
+遂行 | すいこう | Hoàn thành, tiến hành (nhiệm vụ, kế hoạch) 
+例：与えられた任務を無事に遂行した。 
+(Đã hoàn thành tốt nhiệm vụ được giao.) 
+例：困難な計画を強靭な意志で遂行する。 
+(Tiến hành kế hoạch khó khăn bằng một ý chí kiên cường.) 
+例：業務を効率的に遂行するためのマニュアルを作成する。 
+(Lập bản hướng dẫn để tiến hành công việc một cách hiệu quả.) 
+JLPT Test: 彼は強い責任感を持って業務を<u>遂行</u>した。 
+JLPT Test: 予算不足のため、計画を（　　　　）するのが難しくなった。</pre>
+                <br>
+
+                <strong style="font-size: 1.1rem; color: #2f3542;">2. Mẫu Kanji:</strong><br>
+                <pre style="background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 0.95rem; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; border: 1px solid #ddd; font-family: 'Consolas', 'Courier New', monospace;">
+Chữ 蔑 
+Âm Hán Việt: MIỆT 
+ON: ベツ 
+Kun: さげす(む) 
+Ý nghĩa: 
+Coi thường, khinh miệt, miệt thị 
+Từ vựng: 
+軽蔑（けいべつ）: khinh miệt, coi thường 
+
+蔑む（さげすむ）: khinh miệt, coi rẻ 
+
+蔑視（べっし）: cái nhìn khinh bỉ 
+
+他人を蔑む（たにんをさげすむ）: coi thường người khác 
+
+軽蔑のまなざし（けいべつのまなざし）: ánh mắt khinh bỉ</pre>
+                <br>
+
+                <strong style="font-size: 1.1rem; color: #2f3542;">3. Mẫu Ngữ pháp:</strong><br>
+                <pre style="background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 0.95rem; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; border: 1px solid #ddd; font-family: 'Consolas', 'Courier New', monospace;">
+Ngữ pháp 2: ～といえども 
+Mặt trước: 
+～といえども 
+
+Mặt sau: 
+Cấu trúc: Danh từ / Thể thông thường + といえども 
+Ý nghĩa: "Ngay cả/Dẫu cho là... thì cũng...". Dùng để nhấn mạnh dù là một đối tượng đặc biệt thì thực tế vẫn có những điều không thể ngoại lệ. 
+Giải thích: Thường dùng trong văn viết hoặc các tình huống trang trọng. Vế sau thường mang ý nghĩa phủ định một điều đương nhiên hoặc đưa ra lời khuyên/cảnh báo. 
+Ví dụ: 
+
+親といえども、子供のプライバシーを尊重すべきだ。 
+(Dẫu là cha mẹ thì cũng nên tôn trọng quyền riêng tư của con cái.) 
+
+プロの選手といえども、失敗することもある。 
+(Dẫu là vận động viên chuyên nghiệp thì cũng có lúc thất bại.) 
+
+いかに困難な状況といえども、最後まで諦めてはいけない。 
+(Dẫu cho tình huống khó khăn thế nào đi nữa, cũng không được bỏ cuộc đến phút cuối.)</pre>
+
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="closeModal('helpModal')" style="font-size: 1rem; padding: 8px 20px;">Đóng</button>
             </div>
         </div>
     </div>
 
     <script>
-        /* --- JAVASCRIPT: Logic Quản lý --- */
+        /* --- JAVASCRIPT: Logic Quản lý (Optimized) --- */
 
         // State Global
-        let lists = []; 
-        let currentListId = null; 
-        let currentWords = []; 
-        let currentIndex = 0;
-        let isReviewMode = false;
+        const AppState = {
+            lists: [],
+            currentListId: null,
+            currentWords: [],
+            currentIndex: 0,
+            isReviewMode: false,
+            currentCategory: 'vocabulary',
+            currentUserName: "",
+            testHistory: []
+        };
 
-        // Default Data
-        const defaultData = [
-            { kanji: "先生", reading: "せんせい", mean: "Giáo viên", example: "先生は親切です。", status: "", note: "" },
-            { kanji: "学生", reading: "がくせい", mean: "Học sinh", example: "私は学生です。", status: "", note: "" },
-            { kanji: "日本語", reading: "にほんご", mean: "Tiếng Nhật", example: "", status: "", note: "" }
-        ];
+        // Constants
+        const CONFIG = {
+            STORAGE_KEY: 'myFlashcards',
+            HISTORY_KEY: 'testHistory',
+            DEFAULT_DATA: [
+                { kanji: "先生", reading: "せんせい", mean: "Giáo viên", example: "先生は親切です。", status: "", note: "" },
+                { kanji: "学生", reading: "がくせい", mean: "Học sinh", example: "私は学生です。", status: "", note: "" },
+                { kanji: "日本語", reading: "にほんご", mean: "Tiếng Nhật", example: "", status: "", note: "" }
+            ]
+        };
 
-        // DOM Elements
-        const card = document.getElementById('card');
-        const displayReading = document.getElementById('displayReading');
-        const displayMean = document.getElementById('displayMean');
-        const displayExample = document.getElementById('displayExample');
-        const frontText = document.getElementById('frontText');
-        const wordCounter = document.getElementById('wordCounter');
-        const listTitle = document.getElementById('listTitle');
-        const listContainer = document.getElementById('listContainer');
-        const noteInput = document.getElementById('noteInput');
-        
-        // Status Buttons
-        const btnCircle = document.getElementById('btnCircle');
-        const btnTriangle = document.getElementById('btnTriangle');
-        const btnCross = document.getElementById('btnCross');
+        // DOM Elements Cache
+        const DOM = {
+            card: document.getElementById('card'),
+            displayReading: document.getElementById('displayReading'),
+            displayMean: document.getElementById('displayMean'),
+            displayExample: document.getElementById('displayExample'),
+            frontText: document.getElementById('frontText'),
+            wordCounter: document.getElementById('wordCounter'),
+            listTitle: document.getElementById('listTitle'),
+            listContainer: document.getElementById('listContainer'),
+            noteInput: document.getElementById('noteInput'),
+            btnCircle: document.getElementById('btnCircle'),
+            btnTriangle: document.getElementById('btnTriangle'),
+            btnCross: document.getElementById('btnCross'),
+            cardBrand: document.getElementById('cardBrand'),
+            // New Inputs
+            importCategoryInput: document.getElementById('importCategoryInput'),
+            listNameInput: document.getElementById('listNameInput'),
+            bulkInput: document.getElementById('bulkInput'),
+            testContainer: document.getElementById('testContainer'),
+            userNameInput: document.getElementById('userNameInput'),
+            resultListContainer: document.getElementById('resultListContainer'),
+            adminPasswordInput: document.getElementById('adminPasswordInput'),
+            importDataInput: document.getElementById('importDataInput')
+        };
+
+        // --- UTILS: Toast & Debounce ---
+        const Utils = {
+            showToast: function(message, type = 'info') {
+                let container = document.querySelector('.toast-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.className = 'toast-container';
+                    document.body.appendChild(container);
+                }
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${type} show`;
+                toast.innerText = message;
+                
+                container.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            },
+
+            debounce: function(func, wait) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
+                };
+            }
+        };
 
         // --- KHỞI TẠO ---
         window.onload = function() {
-            loadListsFromStorage();
-            if (lists.length === 0) createList("Bài mẫu (Demo)", defaultData);
-            selectList(lists[0].id);
-
+            StorageManager.loadLists();
+            if (AppState.lists.length === 0) ListManager.create("Bài mẫu (Demo)", CONFIG.DEFAULT_DATA, 'vocabulary');
+            
+            // Tìm bài học đầu tiên thuộc category hiện tại
+            const firstList = AppState.lists.find(l => l.type === AppState.currentCategory);
+            if (firstList) ListManager.select(firstList.id);
+            else {
+                UIManager.renderSidebar();
+                CardManager.updateDisplay({kanji: "Chào bạn!", reading: "Hãy tạo bài học mới", mean: "Chọn Import để bắt đầu", example: "Chúc bạn học tốt!"});
+            }
         };
 
-        // --- STORAGE & LISTS ---
-        function saveListsToStorage() {
-            localStorage.setItem('myFlashcards', JSON.stringify(lists));
-            renderSidebar();
-        }
+        // --- STORAGE MANAGER ---
+        const StorageManager = {
+            saveLists: function() {
+                try {
+                    localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(AppState.lists));
+                    UIManager.renderSidebar();
+                } catch (e) {
+                    console.error("Lỗi lưu trữ:", e);
+                    if (e.name === 'QuotaExceededError' || e.code === 22) {
+                        Utils.showToast("Bộ nhớ trình duyệt đã đầy! Hãy xóa bớt bài học cũ.", "error");
+                    } else {
+                        Utils.showToast("Không thể lưu dữ liệu! Đã xảy ra lỗi.", "error");
+                    }
+                }
+            },
 
-        function loadListsFromStorage() {
-            const data = localStorage.getItem('myFlashcards');
-            if (data) lists = JSON.parse(data);
-        }
-
-        function createList(name, words) {
-            const newList = { id: Date.now().toString(), name: name, date: new Date().toLocaleDateString(), words: words };
-            lists.push(newList);
-            saveListsToStorage();
-            return newList.id;
-        }
-        
-        function deleteList(id, event) {
-            event.stopPropagation();
-            if (confirm("Bạn có chắc chắn muốn xóa bài học này không?")) {
-                lists = lists.filter(l => l.id !== id);
-                saveListsToStorage();
-                if (lists.length > 0) selectList(lists[0].id);
-                else { currentWords = []; updateCardDisplay({kanji: "Trống", reading: "", mean: "Hãy thêm bài học mới"}); }
-            }
-        }
-
-        function selectList(id) {
-            currentListId = id;
-            const list = lists.find(l => l.id === id);
-            if (list) {
-                currentWords = list.words;
-                currentIndex = 0;
-                isReviewMode = false;
-                document.getElementById('btnResetFilter').style.display = 'none';
-                listTitle.innerText = list.name;
-                if (currentWords.length > 0) updateCardDisplay(currentWords[0]);
-                updateCounter();
-                renderSidebar();
-            }
-        }
-
-        function renderSidebar() {
-            listContainer.innerHTML = '';
-            lists.forEach(list => {
-                const div = document.createElement('div');
-                div.className = `list-item ${list.id === currentListId ? 'active' : ''}`;
-                div.onclick = () => selectList(list.id);
-                div.innerHTML = `
-                    <span class="list-name">${list.name}</span>
-                    <span class="list-date">${list.words.length} từ • ${list.date}</span>
-                    <span class="list-delete" onclick="deleteList('${list.id}', event)">×</span>
-                `;
-                listContainer.appendChild(div);
-            });
-        }
-        
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('mobile-open'); }
-
-        // --- FLASHCARD LOGIC ---
-
-        function updateCardDisplay(item) {
-            if (!item) return;
-
-            // Tự động tách ví dụ nếu nó bị dính vào phần Nghĩa (Fix lỗi hiển thị cũ)
-            let mean = item.mean || '';
-            let example = item.example || '';
-            
-            const splitMarkers = ["例：", "例:", "Ví dụ:", "Ex:", "Example:"];
-            for (const marker of splitMarkers) {
-                if (mean.includes(marker)) {
-                    const parts = mean.split(marker);
-                    mean = parts[0].trim();
-                    // Loại bỏ dấu ngoặc thừa ở cuối nếu có (do format cũ)
-                    if (mean.endsWith('(')) mean = mean.slice(0, -1).trim();
-                    
-                    const extractedEx = marker + " " + parts.slice(1).join(marker).trim();
-                    // Loại bỏ dấu đóng ngoặc thừa ở cuối ví dụ nếu có
-                    const cleanEx = extractedEx.endsWith(')') ? extractedEx.slice(0, -1) : extractedEx;
-                    
-                    if (example) example = cleanEx + "<br>" + example;
-                    else example = cleanEx;
-                    break; 
+            loadLists: function() {
+                const data = localStorage.getItem(CONFIG.STORAGE_KEY);
+                if (data) {
+                    AppState.lists = JSON.parse(data);
+                    AppState.lists.forEach(l => {
+                        if (!l.type) l.type = 'vocabulary';
+                    });
+                }
+                
+                const historyData = localStorage.getItem(CONFIG.HISTORY_KEY);
+                if (historyData) {
+                    AppState.testHistory = JSON.parse(historyData);
                 }
             }
+        };
 
-            // Update Content
-            frontText.innerText = item.kanji;
-            displayReading.innerText = item.reading || '';
-            displayMean.innerText = mean ? `(${mean})` : '';
-            displayExample.innerHTML = example || '';
-            
-            // Update Note
-            noteInput.value = item.note || "";
-            
-            // Reset Tabs (Always show Info first)
-            switchTab('info', null);
-            
-            // Highlight Status Button
-            updateStatusUI(item.status);
-        }
-        
-        function updateStatusUI(status) {
-            btnCircle.classList.remove('selected');
-            btnTriangle.classList.remove('selected');
-            btnCross.classList.remove('selected');
-            
-            if (status === 'O') btnCircle.classList.add('selected');
-            if (status === 'Δ') btnTriangle.classList.add('selected');
-            if (status === 'X') btnCross.classList.add('selected');
-        }
+        // --- LIST MANAGER ---
+        const ListManager = {
+            create: function(name, words, type = 'vocabulary') {
+                const newList = { 
+                    id: Date.now().toString(), 
+                    name: name, 
+                    date: new Date().toLocaleDateString(), 
+                    words: words,
+                    type: type 
+                };
+                AppState.lists.push(newList);
+                StorageManager.saveLists();
+                return newList.id;
+            },
 
-        function flipCard() {
-            card.classList.toggle('is-flipped');
-        }
-        
-        function switchTab(tabName, event) {
-            if (event) event.stopPropagation(); // Prevent flipping
-            
-            // UI Update
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            if (tabName === 'info') {
-                document.querySelector('.tab:nth-child(1)').classList.add('active');
-                document.getElementById('tabInfo').classList.add('active');
-            } else {
-                document.querySelector('.tab:nth-child(2)').classList.add('active');
-                document.getElementById('tabNote').classList.add('active');
-            }
-        }
+            delete: function(id, event) {
+                event.stopPropagation();
+                if (confirm("Bạn có chắc chắn muốn xóa bài học này không?")) {
+                    AppState.lists = AppState.lists.filter(l => l.id !== id);
+                    StorageManager.saveLists();
+                    if (AppState.lists.length > 0) ListManager.select(AppState.lists[0].id);
+                    else { 
+                        AppState.currentWords = []; 
+                        CardManager.updateDisplay({kanji: "Trống", reading: "", mean: "Hãy thêm bài học mới"}); 
+                        UIManager.renderSidebar();
+                    }
+                }
+            },
 
-        function nextCard() {
-            if (currentWords.length === 0) return;
+            select: function(id) {
+                AppState.currentListId = id;
+                const list = AppState.lists.find(l => l.id === id);
+                if (list) {
+                    AppState.currentWords = list.words;
+                    AppState.currentIndex = 0;
+                    AppState.isReviewMode = false;
+                    document.getElementById('btnResetFilter').style.display = 'none';
+                    DOM.listTitle.innerText = `${list.name}`;
+                    
+                    if (AppState.currentWords.length > 0) CardManager.updateDisplay(AppState.currentWords[0]);
+                    else CardManager.updateDisplay({kanji: "Trống", reading: "", mean: "Danh sách này chưa có từ nào", example: ""});
+                    
+                    UIManager.updateCounter();
+                    UIManager.renderSidebar();
+                }
+            },
 
-            if (currentIndex < currentWords.length - 1) {
-                card.classList.remove('is-flipped');
-                setTimeout(() => {
-                    currentIndex++;
-                    updateCardDisplay(currentWords[currentIndex]);
-                    updateCounter();
-                }, 300);
-            } else {
-                if (confirm("Bạn đã học hết danh sách! Bạn có muốn làm bài kiểm tra trắc nghiệm không?")) {
-                    startTestMode();
+            switchCategory: function(cat) {
+                AppState.currentCategory = cat;
+                
+                // Update Branding
+                if (cat === 'grammar') DOM.cardBrand.innerText = "習うより慣れよ"; 
+                else if (cat === 'kanji') DOM.cardBrand.innerText = "日進月歩"; 
+                else DOM.cardBrand.innerText = "千里の道も一歩から"; 
+
+                // Update UI tabs
+                document.querySelectorAll('.sidebar-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.innerText.toLowerCase().includes(cat === 'vocabulary' ? 'từ vựng' : (cat === 'kanji' ? 'kanji' : 'ngữ pháp'))) {
+                        tab.classList.add('active');
+                    }
+                });
+
+                UIManager.renderSidebar();
+
+                const firstList = AppState.lists.find(l => (l.type || 'vocabulary') === AppState.currentCategory);
+                if (firstList) {
+                    ListManager.select(firstList.id);
                 } else {
-                    alert("Chúc mừng bạn đã hoàn thành danh sách!");
-                    card.classList.remove('is-flipped');
-                    setTimeout(() => {
-                        currentIndex = 0;
-                        updateCardDisplay(currentWords[currentIndex]);
-                        updateCounter();
-                    }, 300);
+                    AppState.currentListId = null;
+                    AppState.currentWords = [];
+                    CardManager.updateDisplay({kanji: "Trống", reading: "", mean: "Chưa có bài học nào", example: "Bấm 'Import nhiều từ' để tạo mới"});
+                    UIManager.updateCounter();
+                    DOM.listTitle.innerText = cat === 'vocabulary' ? "Từ vựng" : (cat === 'kanji' ? "Kanji" : "Ngữ pháp");
                 }
             }
-        }
+        };
 
-        function prevCard() {
-            if (currentWords.length === 0) return;
-            card.classList.remove('is-flipped');
-            setTimeout(() => {
-                currentIndex = (currentIndex - 1 + currentWords.length) % currentWords.length;
-                updateCardDisplay(currentWords[currentIndex]);
-                updateCounter();
-            }, 300);
-        }
-        
-        function updateCounter() {
-            if (currentWords.length === 0) wordCounter.innerText = "0 / 0";
-            else wordCounter.innerText = `Từ ${currentIndex + 1} / ${currentWords.length}`;
-        }
+        // --- UI MANAGER ---
+        const UIManager = {
+            renderSidebar: function() {
+                DOM.listContainer.innerHTML = '';
+                const filteredLists = AppState.lists.filter(l => (l.type || 'vocabulary') === AppState.currentCategory);
 
-        // --- STATUS & AUTO NEXT ---
+                if (filteredLists.length === 0) {
+                    DOM.listContainer.innerHTML = `<div style="padding:15px; text-align:center; color:#999;">Chưa có bài học nào.<br>Bấm Import để thêm!</div>`;
+                    return;
+                }
 
-        function setStatusAndNext(status) {
-            const word = currentWords[currentIndex];
-            if (!word) return;
+                const fragment = document.createDocumentFragment();
+                filteredLists.forEach(list => {
+                    const div = document.createElement('div');
+                    div.className = `list-item ${list.id === AppState.currentListId ? 'active' : ''}`;
+                    div.onclick = () => ListManager.select(list.id);
+                    div.innerHTML = `
+                        <span class="list-name">${list.name}</span>
+                        <span class="list-date">${list.words.length} mục • ${list.date}</span>
+                        <span class="list-delete" onclick="ListManager.delete('${list.id}', event)">×</span>
+                    `;
+                    fragment.appendChild(div);
+                });
+                DOM.listContainer.appendChild(fragment);
+            },
 
-            // Save status
-            word.status = status;
-            saveListsToStorage();
-            updateStatusUI(status);
+            updateCounter: function() {
+                if (AppState.currentWords.length === 0) DOM.wordCounter.innerText = "0 / 0";
+                else DOM.wordCounter.innerText = `Từ ${AppState.currentIndex + 1} / ${AppState.currentWords.length}`;
+            },
+
+            toggleSidebar: function() { 
+                if (window.innerWidth <= 768) {
+                    DOM.listContainer.classList.toggle('expanded');
+                    document.querySelector('.sidebar-header').classList.toggle('expanded');
+                } else {
+                    document.getElementById('sidebar').classList.toggle('active'); 
+                    document.querySelector('.sidebar-overlay').classList.toggle('active');
+                }
+            },
             
-            // Auto Next Card (sau 200ms để người dùng thấy hiệu ứng click)
-            setTimeout(() => {
-                nextCard();
-            }, 200);
-        }
-
-        function saveNote() {
-            const word = currentWords[currentIndex];
-            if (word) {
-                word.note = noteInput.value;
-                saveListsToStorage();
+            closeSidebar: function() {
+                document.getElementById('sidebar').classList.remove('active'); 
+                document.querySelector('.sidebar-overlay').classList.remove('active');
             }
+        };
+
+        // --- CARD MANAGER ---
+        const CardManager = {
+            updateDisplay: function(item) {
+                if (!item) return;
+
+                let mean = item.mean || '';
+                let example = item.example || '';
+                
+                const splitMarkers = ["例：", "例:", "Ví dụ:", "Ex:", "Example:"];
+                for (const marker of splitMarkers) {
+                    if (mean.includes(marker)) {
+                        const parts = mean.split(marker);
+                        mean = parts[0].trim();
+                        if (mean.endsWith('(')) mean = mean.slice(0, -1).trim();
+                        const extractedEx = marker + " " + parts.slice(1).join(marker).trim();
+                        const cleanEx = extractedEx.endsWith(')') ? extractedEx.slice(0, -1) : extractedEx;
+                        example = example ? cleanEx + "<br>" + example : cleanEx;
+                        break; 
+                    }
+                }
+
+                DOM.frontText.innerText = item.kanji;
+                DOM.displayReading.innerText = item.reading || '';
+
+                if (AppState.currentCategory === 'kanji') {
+                    document.querySelector('.card-front').classList.add('kanji-mode');
+                } else {
+                    document.querySelector('.card-front').classList.remove('kanji-mode');
+                }
+
+                if (item.structure || item.explanation) {
+                    // Grammar Render
+                    let html = `<div class="grammar-block">`;
+                    if (item.structure) html += `<div class="grammar-item grammar-structure"><strong>Cấu trúc</strong>${item.structure}</div>`;
+                    if (mean) html += `<div class="grammar-item grammar-mean"><strong>Ý nghĩa</strong>${mean}</div>`;
+                    if (item.explanation) html += `<div class="grammar-item grammar-explain"><strong>Giải thích</strong>${item.explanation}</div>`;
+                    html += `</div>`;
+                    
+                    DOM.displayMean.innerHTML = html;
+                    DOM.displayReading.style.display = item.reading ? 'block' : 'none';
+                    DOM.displayExample.className = 'word-example grammar-example-text';
+
+                } else if (AppState.currentCategory === 'kanji') {
+                    // Kanji Render
+                    DOM.displayReading.style.display = 'none';
+                    DOM.displayExample.style.display = 'none';
+                    
+                    let definitionHtml = item.definition ? `<div class="kanji-middle"><div class="kanji-middle-title">Ý nghĩa</div><div class="kanji-middle-content">${item.definition}</div></div>` : '';
+                    let vocabListHtml = item.example ? `<div class="kanji-bottom"><div class="kanji-label" style="margin-bottom:8px; font-size: 1rem; color: #7f8c8d; font-weight: bold; text-transform: uppercase;">Từ vựng:</div><div style="font-size: 0.8rem; color: #2f3542; line-height: 1.8;">${item.example}</div></div>` : '';
+
+                    const html = `
+                        <div class="kanji-layout">
+                            <div class="kanji-top">
+                                <div class="kanji-left"><div class="kanji-char-large">${item.kanji}</div></div>
+                                <div class="kanji-right">
+                                    <div class="kanji-mean-header">${mean || ''}</div>
+                                    <div class="kanji-info-row"><div class="kanji-label">Kun</div><div class="kanji-reading">${item.kunyomi || item.reading || '-'}</div></div>
+                                    <div class="kanji-info-row"><div class="kanji-label">On</div><div class="kanji-reading">${item.onyomi || '-'}</div></div>
+                                    ${item.strokes ? `<div class="kanji-info-row"><div class="kanji-label">Nét</div><div>${item.strokes}</div></div>` : ''}
+                                </div>
+                            </div>
+                            ${definitionHtml}
+                            ${vocabListHtml}
+                        </div>
+                    `;
+                    DOM.displayMean.innerHTML = html;
+                    DOM.displayMean.style.height = '100%'; 
+                    DOM.displayMean.style.marginBottom = '0';
+                    document.getElementById('tabInfo').style.padding = '0';
+                    document.getElementById('tabInfo').style.height = '100%';
+                } else {
+                    // Vocabulary Render
+                    DOM.displayReading.style.display = 'block';
+                    DOM.displayMean.innerHTML = mean ? `(${mean})` : '';
+                    DOM.displayMean.style.height = ''; 
+                    DOM.displayMean.style.marginBottom = '';
+                    DOM.displayExample.className = 'word-example';
+                    DOM.displayExample.style.display = 'block';
+                    document.getElementById('tabInfo').style.padding = '20px';
+                }
+
+                if (AppState.currentCategory !== 'kanji') {
+                    DOM.displayExample.innerHTML = example || '';
+                }
+                
+                DOM.noteInput.value = item.note || "";
+                CardManager.switchTab('info', null);
+                CardManager.updateStatusUI(item.status);
+            },
+
+            updateStatusUI: function(status) {
+                DOM.btnCircle.classList.remove('selected');
+                DOM.btnTriangle.classList.remove('selected');
+                DOM.btnCross.classList.remove('selected');
+                
+                if (status === 'O') DOM.btnCircle.classList.add('selected');
+                if (status === 'Δ') DOM.btnTriangle.classList.add('selected');
+                if (status === 'X') DOM.btnCross.classList.add('selected');
+            },
+
+            flip: function() {
+                DOM.card.classList.toggle('is-flipped');
+            },
+            
+            switchTab: function(tabName, event) {
+                if (event) event.stopPropagation();
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                if (tabName === 'info') {
+                    document.querySelector('.tab:nth-child(1)').classList.add('active');
+                    document.getElementById('tabInfo').classList.add('active');
+                } else {
+                    document.querySelector('.tab:nth-child(2)').classList.add('active');
+                    document.getElementById('tabNote').classList.add('active');
+                }
+            },
+
+            next: function() {
+                if (AppState.currentWords.length === 0) return;
+
+                if (AppState.currentIndex < AppState.currentWords.length - 1) {
+                    DOM.card.classList.remove('is-flipped');
+                    setTimeout(() => {
+                        AppState.currentIndex++;
+                        CardManager.updateDisplay(AppState.currentWords[AppState.currentIndex]);
+                        UIManager.updateCounter();
+                    }, 300);
+                } else {
+                    if (confirm("Bạn đã học hết danh sách! Bạn có muốn làm bài kiểm tra trắc nghiệm không?")) {
+                        TestManager.start();
+                    } else {
+                        Utils.showToast("Chúc mừng bạn đã hoàn thành danh sách!", "success");
+                        DOM.card.classList.remove('is-flipped');
+                        setTimeout(() => {
+                            AppState.currentIndex = 0;
+                            CardManager.updateDisplay(AppState.currentWords[AppState.currentIndex]);
+                            UIManager.updateCounter();
+                        }, 300);
+                    }
+                }
+            },
+
+            prev: function() {
+                if (AppState.currentWords.length === 0) return;
+                DOM.card.classList.remove('is-flipped');
+                setTimeout(() => {
+                    AppState.currentIndex = (AppState.currentIndex - 1 + AppState.currentWords.length) % AppState.currentWords.length;
+                    CardManager.updateDisplay(AppState.currentWords[AppState.currentIndex]);
+                    UIManager.updateCounter();
+                }, 300);
+            },
+
+            setStatusAndNext: function(status) {
+                const word = AppState.currentWords[AppState.currentIndex];
+                if (!word) return;
+
+                word.status = status;
+                StorageManager.saveLists();
+                CardManager.updateStatusUI(status);
+                
+                setTimeout(() => {
+                    CardManager.next();
+                }, 200);
+            }
+        };
+
+        // --- IMPORT MANAGER ---
+        const ImportManager = {
+            openModal: function() {
+                document.getElementById('bulkModal').classList.add('active'); 
+                
+                // Clear inputs for new entry
+                if (DOM.listNameInput) DOM.listNameInput.value = "";
+                if (DOM.bulkInput) DOM.bulkInput.value = "";
+
+                if (AppState.currentCategory) {
+                    const select = document.getElementById('importCategoryInput');
+                    if (select) select.value = AppState.currentCategory;
+                }
+                document.getElementById('listNameInput').focus(); 
+            },
+
+            parseLine: function(line) {
+                if (!line || line.trim() === "") return null;
+                
+                // Ignore lines starting with ( or （ (likely translations or notes)
+                const trimmed = line.trim();
+                if (trimmed.startsWith('(') || trimmed.startsWith('（')) return null;
+
+                const pipeParts = line.split('|');
+                let result = {};
+
+                if (pipeParts.length >= 3) {
+                    result = {
+                        kanji: pipeParts[0].trim(),
+                        reading: pipeParts[1].trim(),
+                        mean: pipeParts[2].trim(),
+                        example: pipeParts.slice(3).join('|').trim().replace(/\n/g, "<br>")
+                    };
+                } else {
+                    let mainPart = line;
+                    let example = "";
+                    if (pipeParts.length === 2 && (pipeParts[0].includes('=') || pipeParts[0].includes(','))) {
+                         mainPart = pipeParts[0].trim(); example = pipeParts[1].trim();
+                    }
+                    
+                    let kanji = "", reading = "", mean = "";
+                    if (mainPart.includes(',')) {
+                        const idx = mainPart.indexOf(',');
+                        const left = mainPart.substring(0, idx).trim(); 
+                        mean = mainPart.substring(idx + 1).trim();     
+                        if (left.includes('(')) {
+                            const op = left.indexOf('('); const cp = left.lastIndexOf(')');
+                            kanji = left.substring(0, op).trim(); reading = left.substring(op + 1, cp).trim();
+                        } else {
+                            const sp = left.lastIndexOf(' ');
+                            kanji = sp !== -1 ? left.substring(0, sp).trim() : left; reading = sp !== -1 ? left.substring(sp + 1).trim() : "";
+                        }
+                    } else if (mainPart.includes('=')) {
+                        const parts = mainPart.split('=');
+                        const left = parts[0].trim(); mean = parts[1].trim();
+                        const sp = left.lastIndexOf(' ');
+                        kanji = sp !== -1 ? left.substring(0, sp).trim() : left; reading = sp !== -1 ? left.substring(sp + 1).trim() : "";
+                    } else if (mainPart.includes(':') || mainPart.includes('：')) {
+                        const sep = mainPart.includes(':') ? ':' : '：';
+                        const idx = mainPart.indexOf(sep);
+                        const left = mainPart.substring(0, idx).trim();
+                        mean = mainPart.substring(idx + 1).trim();
+                        
+                        if (left.includes('(') || left.includes('（')) {
+                            const op = left.indexOf('(') !== -1 ? left.indexOf('(') : left.indexOf('（');
+                            const cp = left.lastIndexOf(')') !== -1 ? left.lastIndexOf(')') : left.lastIndexOf('）');
+                            if (cp > op) {
+                                kanji = left.substring(0, op).trim();
+                                reading = left.substring(op + 1, cp).trim();
+                            } else { kanji = left; }
+                        } else {
+                            kanji = left; 
+                        }
+                    } else { return null; }
+                    result = { kanji, reading, mean, example: example.replace(/\n/g, "<br>") };
+                }
+                result.status = ""; result.note = "";
+                return result;
+            },
+
+            process: function() {
+                const listName = document.getElementById('listNameInput').value.trim() || `Bài học ${new Date().toLocaleDateString()}`;
+                let category = document.getElementById('importCategoryInput').value || 'vocabulary';
+                const text = document.getElementById('bulkInput').value;
+                if (!text.trim()) { Utils.showToast("Vui lòng nhập nội dung!", "error"); return; }
+
+                // Auto-detect Category based on content signatures
+                if ((text.includes('Mặt trước:') || text.includes('Mặt trước :')) && (text.includes('Mặt sau:') || text.includes('Mặt sau :'))) {
+                    category = 'grammar';
+                    // Update UI to reflect detection
+                    document.getElementById('importCategoryInput').value = 'grammar';
+                } else if ((text.includes('Chữ ') && text.includes('Âm Hán Việt:')) || (text.includes('|') && text.includes('Âm On') && text.includes('Bộ thủ'))) {
+                    category = 'kanji';
+                    document.getElementById('importCategoryInput').value = 'kanji';
+                }
+                
+                const newWords = [];
+
+                if (category === 'grammar' && (text.includes('Mặt trước:') || text.includes('Mặt trước :')) && (text.includes('Mặt sau:') || text.includes('Mặt sau :'))) {
+                    const parts = text.split(/Mặt trước\s*:/i);
+                    if (parts.length > 1) {
+                        for (let i = 1; i < parts.length; i++) {
+                            let part = parts[i];
+                            if (i < parts.length - 1) {
+                                part = part.trimEnd();
+                                const headerRegex = /(\n|^)(📘|Ngữ pháp)[^\n]*$/i;
+                                if (headerRegex.test(part)) {
+                                    part = part.replace(headerRegex, '').trimEnd();
+                                } else {
+                                    const lastNewLineIdx = part.lastIndexOf('\n');
+                                    if (lastNewLineIdx !== -1) {
+                                        part = part.substring(0, lastNewLineIdx).trimEnd();
+                                    }
+                                }
+                            }
+
+                            const backSplit = part.split(/Mặt sau\s*:/i);
+                            if (backSplit.length < 2) continue;
+
+                            const kanji = backSplit[0].trim();
+                            const backContent = backSplit[1];
+
+                            const extract = (label) => {
+                                const regex = new RegExp(`${label}\\s*:\\s*([\\s\\S]*?)(?=(Cấu trúc:|Ý nghĩa:|Giải thích:|Ví dụ:|$))`, 'i');
+                                const match = backContent.match(regex);
+                                return match ? match[1].trim() : "";
+                            };
+
+                            const structure = extract("Cấu trúc");
+                            const mean = extract("Ý nghĩa");
+                            const explanation = extract("Giải thích");
+                            
+                            let example = "";
+                            const exMatch = backContent.match(/Ví dụ\s*:\s*([\s\S]*)/i);
+                            if (exMatch) {
+                                example = exMatch[1].trim().replace(/\n/g, "<br>");
+                            }
+
+                            if (kanji) {
+                                newWords.push({
+                                    kanji: kanji,
+                                    reading: "", 
+                                    mean: mean,
+                                    structure: structure,
+                                    explanation: explanation,
+                                    example: example,
+                                    status: "",
+                                    note: ""
+                                });
+                            }
+                        }
+                    }
+                }
+                else if (category === 'kanji' && (text.includes('Chữ ') || text.includes('Âm Hán Việt:'))) {
+                    const parts = text.split(/Chữ /i);
+                    
+                    parts.forEach(part => {
+                        if (!part.trim()) return;
+                        
+                        let kanji = "";
+                        let mean = "";
+                        let onyomi = "";
+                        let kunyomi = "";
+                        let definition = "";
+                        let examples = "";
+
+                        const lines = part.split('\n').map(l => l.trim()).filter(l => l);
+                        
+                        if (lines.length > 0) {
+                            const firstLine = lines[0];
+                            const match = firstLine.match(/([^(]+)\(([^)]+)\)/);
+                            if (match) {
+                                mean = match[1].trim();
+                                kanji = match[2].trim();
+                            } else {
+                                kanji = firstLine;
+                            }
+                        }
+
+                        let collectingExample = false;
+                        let collectingDefinition = false;
+
+                        lines.forEach(line => {
+                            if (line.toLowerCase().startsWith('âm hán việt:')) {
+                                if (!mean) mean = line.split(':')[1].trim();
+                                collectingDefinition = false; collectingExample = false;
+                            } else if (line.toLowerCase().startsWith('on:')) {
+                                onyomi = line.split(':')[1].trim();
+                                collectingDefinition = false; collectingExample = false;
+                            } else if (line.toLowerCase().startsWith('kun:')) {
+                                kunyomi = line.split(':')[1].trim();
+                                collectingDefinition = false; collectingExample = false;
+                            } else if (line.toLowerCase().startsWith('ý nghĩa:')) {
+                                 collectingDefinition = true;
+                                 collectingExample = false;
+                                 const parts = line.split(':');
+                                 if (parts.length > 1 && parts[1].trim()) {
+                                     definition += (definition ? "<br>" : "") + parts[1].trim();
+                                 }
+                            } else if (line.toLowerCase().startsWith('từ vựng:')) {
+                                collectingExample = true;
+                                collectingDefinition = false;
+                            } else if (collectingDefinition) {
+                                 if (line.trim()) definition += (definition ? "<br>" : "") + line.trim();
+                            } else if (collectingExample) {
+                                if (line.trim()) {
+                                    let formattedLine = line.trim();
+                                    examples += (examples ? "<br>" : "") + formattedLine;
+                                }
+                            }
+                        });
+
+                        if (kanji) {
+                             newWords.push({
+                                kanji: kanji,
+                                onyomi: onyomi,
+                                kunyomi: kunyomi,
+                                mean: mean,
+                                definition: definition,
+                                radicals: "",
+                                strokes: "",
+                                example: examples,
+                                status: "",
+                                note: ""
+                            });
+                        }
+                    });
+                }
+                else if (category === 'kanji' && (text.includes('|') || text.includes('='))) {
+                    const lines = text.split('\n');
+                    lines.forEach(line => {
+                        if (!line.trim()) return;
+                        
+                        const parts = line.split('|').map(p => p.trim());
+                        
+                        if (parts.length >= 4) {
+                            newWords.push({
+                                kanji: parts[0],
+                                onyomi: parts[1],
+                                kunyomi: parts[2],
+                                mean: parts[3],
+                                radicals: parts[4] || "", 
+                                strokes: parts[5] || "",
+                                example: "", 
+                                status: "",
+                                note: ""
+                            });
+                        } else {
+                            const w = ImportManager.parseLine(line);
+                            if (w) newWords.push(w);
+                        }
+                    });
+                }
+
+                if (newWords.length === 0) {
+                    const lines = text.split('\n');
+                    let lastIdx = -1;
+
+                    lines.forEach(line => {
+                    const tLine = line.trim();
+                    if (!tLine) return;
+
+                    const exampleRegex = /^(ví dụ:|ex:|example:|例[:：])/i;
+                    if (lastIdx !== -1 && exampleRegex.test(tLine)) {
+                        const ex = tLine.replace(exampleRegex, '').trim();
+                        if (newWords[lastIdx].example) newWords[lastIdx].example += "<br>" + ex;
+                        else newWords[lastIdx].example = ex;
+                        return;
+                    }
+
+                    // Handle translation lines starting with ( or （
+                    if (lastIdx !== -1 && (tLine.startsWith('(') || tLine.startsWith('（'))) {
+                         if (newWords[lastIdx].example) newWords[lastIdx].example += "<br>" + tLine;
+                         else newWords[lastIdx].example = tLine;
+                         return;
+                    }
+
+                    const testRegex = /^(jlpt test:|test:)/i;
+                    if (lastIdx !== -1 && testRegex.test(tLine)) {
+                        const testQ = tLine.replace(testRegex, '').trim();
+                        if (newWords[lastIdx].tests) newWords[lastIdx].tests.push(testQ);
+                        else newWords[lastIdx].tests = [testQ];
+                        return;
+                    }
+
+                    if (tLine.includes('|') || tLine.includes('=')) {
+                         const word = ImportManager.parseLine(line);
+                         if (word) { newWords.push(word); lastIdx = newWords.length - 1; return; }
+                    }
+
+                    if (lastIdx !== -1 && /^\d+([\.\)\s]|$)/.test(tLine)) {
+                         if (newWords[lastIdx].example) newWords[lastIdx].example += "<br>" + tLine;
+                         else newWords[lastIdx].example = tLine;
+                         return;
+                    }
+
+                    const word = ImportManager.parseLine(line);
+                    if (word) { 
+                        newWords.push(word); 
+                        lastIdx = newWords.length - 1; 
+                    } else if (lastIdx !== -1) {
+                        if (newWords[lastIdx].example) newWords[lastIdx].example += "<br>" + tLine;
+                        else newWords[lastIdx].example = tLine;
+                    }
+                });
+                }
+
+                if (newWords.length > 0) {
+                    const newId = ListManager.create(listName, newWords, category);
+                    AppState.currentCategory = category;
+                    UIManager.renderSidebar();
+                    ListManager.select(newId);
+                    
+                    closeModal('bulkModal');
+                    Utils.showToast(`Đã tạo bài học "${listName}" (${category}) với ${newWords.length} mục!`, "success");
+                } else { Utils.showToast("Không tìm thấy từ vựng hợp lệ nào!", "error"); }
+            }
+        };
+
+        // --- TEST MANAGER ---
+        const TestManager = {
+            questions: [],
+            
+            start: function() {
+                // Disable Test for Kanji category as requested
+                if (AppState.currentCategory === 'kanji') {
+                    Utils.showToast("Chức năng kiểm tra chưa hỗ trợ cho phần Kanji.", "info");
+                    return;
+                }
+
+                const originalList = AppState.lists.find(l => l.id === AppState.currentListId);
+                if (!originalList || originalList.words.length < 4) {
+                    Utils.showToast("Cần ít nhất 4 mục để tạo bài kiểm tra!", "error");
+                    return;
+                }
+                
+                AppState.currentUserName = "Học viên";
+                
+                TestManager.questions = originalList.words.map(target => {
+                    let allDistractors = [];
+                    AppState.lists.forEach(list => {
+                        if ((list.type || 'vocabulary') === AppState.currentCategory) {
+                            allDistractors = allDistractors.concat(list.words);
+                        }
+                    });
+                    
+                    const others = allDistractors.filter(w => w.kanji !== target.kanji);
+                    const shuffledOthers = others.sort(() => 0.5 - Math.random());
+                    
+                    let distractors = shuffledOthers.slice(0, 3);
+                    while (distractors.length < 3) {
+                        if (others.length > 0) distractors.push(others[Math.floor(Math.random() * others.length)]);
+                        else distractors.push({kanji: "N/A", reading: "N/A", mean: "N/A"});
+                    }
+                    
+                    const options = [target, ...distractors].sort(() => 0.5 - Math.random());
+                    
+                    let questionText = "";
+                    let isClozeTest = false; 
+                    
+                    if (AppState.currentCategory === 'grammar') {
+                        if (target.tests && target.tests.length > 0) {
+                            const randomTest = target.tests[Math.floor(Math.random() * target.tests.length)];
+                            questionText = randomTest;
+                            isClozeTest = true; 
+                        } else {
+                            let foundInExample = false;
+                            if (target.example) {
+                                const keywords = target.kanji.split('/').map(k => k.replace(/[～~]/g, '').trim()).filter(k => k.length > 0);
+                                keywords.sort((a, b) => b.length - a.length);
+
+                                const examples = target.example.split('<br>');
+                                const shuffledExamples = examples.sort(() => 0.5 - Math.random());
+
+                                for (let ex of shuffledExamples) {
+                                    let cleanEx = ex.replace(/\(.*\)/g, "").trim();
+                                    if (!cleanEx) continue;
+                                    
+                                    let tempEx = cleanEx;
+                                    let replaced = false;
+                                    
+                                    for (let kw of keywords) {
+                                        if (tempEx.includes(kw)) {
+                                            const regex = new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                                            tempEx = tempEx.replace(regex, '(____)');
+                                            replaced = true;
+                                        }
+                                    }
+                                    
+                                    if (replaced) {
+                                        questionText = tempEx;
+                                        isClozeTest = true;
+                                        foundInExample = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            if (!foundInExample) {
+                                questionText = target.mean ? `Cấu trúc nào có ý nghĩa: "${target.mean}"?` : "Chọn cấu trúc ngữ pháp đúng:";
+                                isClozeTest = true;
+                            }
+                        }
+
+                    } else if (AppState.currentCategory === 'kanji') {
+                        // KANJI TEST MODE: Vocab Reading Test
+                        // Question: Vocab Word (Kanji)
+                        // Options: Readings (Hiragana)
+                        
+                        let questionText = "";
+                        let correctAnswer = "";
+                        let isClozeTest = false; // False means options are readings (Hiragana)
+
+                        // 1. Try to find from "Từ vựng:" list inside example
+                        let vocabList = [];
+                        // Improved regex to catch "Từ vựng:" with various separators or casing
+                        if (target.example && /Từ vựng[:：\s]/i.test(target.example)) {
+                            const parts = target.example.split(/Từ vựng[:：\s]/i);
+                            if (parts.length > 1) {
+                                const vocabSection = parts[1];
+                                const lines = vocabSection.split('<br>');
+                                lines.forEach(l => {
+                                    l = l.trim();
+                                    if (l) vocabList.push(l);
+                                });
+                            }
+                        }
+
+                        if (vocabList.length > 0) {
+                             const randomVocab = vocabList[Math.floor(Math.random() * vocabList.length)];
+                             // Improved regex to handle various formats:
+                             // 1. Word (Reading) : Meaning
+                             // 2. Word (Reading) Meaning
+                             // 3. Word: Reading : Meaning
+                             // 4. Word(Reading)
+                             // Format expected: 破綻 (はたん) : phá sản
+                             
+                             // Try robust matching
+                             const match = randomVocab.match(/^([^:(（]+)\s*[(:（]([^:)）]+)[)）]\s*[:：]?\s*(.*)$/);
+                             
+                             if (match) {
+                                 const vWord = match[1].trim();
+                                 const vReading = match[2].trim();
+                                 const vMean = match[3] ? match[3].trim() : "";
+                                 
+                                 if (vWord && vReading) {
+                                    questionText = `<strong style="font-size:2rem; color:#e74c3c;">${vWord}</strong><br><span style="font-size:1rem; color:#555;">(${vMean})</span>`;
+                                    correctAnswer = vReading;
+                                 }
+                             }
+                        }
+                        
+                        // 2. Fallback: Use Main Kanji
+                        // Ensure we have a valid reading, otherwise skip this question or use "N/A"
+                        if (!questionText) {
+                            const reading = target.reading || target.onyomi || target.kunyomi || "???";
+                            questionText = `<strong style="font-size:3rem; color:#e74c3c;">${target.kanji}</strong><br><span style="font-size:1rem; color:#555;">(${target.mean})</span>`;
+                            correctAnswer = reading;
+                        }
+
+                        // Override Options for this question
+                        // We need 1 correct answer + 3 distractors
+                        // STRATEGY: Use readings from OTHER vocab in the SAME list if available (Internal Distractors)
+                        
+                        let distractorReadings = [];
+                        
+                        // Try to get internal distractors first
+                        if (vocabList.length > 1) {
+                            // Filter out the correct answer's line (approximate check)
+                            const otherVocabs = vocabList.filter(v => !v.includes(correctAnswer));
+                            const shuffledVocabs = otherVocabs.sort(() => 0.5 - Math.random());
+                            
+                            shuffledVocabs.slice(0, 5).forEach(v => {
+                                if (distractorReadings.length >= 3) return;
+                                const m = v.match(/^([^:(（]+)\s*[(:（]([^:)）]+)[)）]\s*[:：]?\s*(.*)$/);
+                                if (m && m[2]) {
+                                    const r = m[2].trim();
+                                    if (r !== correctAnswer && !distractorReadings.includes(r)) {
+                                        distractorReadings.push(r);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // If not enough internal distractors, fill with External Distractors (from other cards)
+                        if (distractorReadings.length < 3) {
+                             const externalReadings = shuffledOthers.map(o => o.reading);
+                             for (let r of externalReadings) {
+                                 if (distractorReadings.length >= 3) break;
+                                 if (r !== correctAnswer && !distractorReadings.includes(r)) {
+                                     distractorReadings.push(r);
+                                 }
+                             }
+                        }
+                        
+                        // Ensure we have 3 distractors (pad with dummy if needed)
+                        while (distractorReadings.length < 3) {
+                            distractorReadings.push("N/A");
+                        }
+                        
+                        // Create new Options Array (Strings or Objects?)
+                        // Existing render uses 'opt.reading'. So we should fake Objects.
+                        const newOptions = [
+                            { reading: correctAnswer, isCorrect: true },
+                            { reading: distractorReadings[0], isCorrect: false },
+                            { reading: distractorReadings[1], isCorrect: false },
+                            { reading: distractorReadings[2], isCorrect: false }
+                        ].sort(() => 0.5 - Math.random());
+                        
+                        // Update the question object structure to support this custom option set
+                        // We return newOptions instead of standard 'options'
+                        // And we need to make sure 'target' is not used for checking answer if we use custom options
+                        // But wait, TestManager.selectOption uses:
+                        // TestManager.questions[qIndex].selected = TestManager.questions[qIndex].options[optIndex];
+                        // And submit uses:
+                        // if (q.selected.reading === q.target.reading) ...
+                        // This logic is bound to q.target!
+                        
+                        // We must Hack the 'target' for this question instance to match the Vocab Reading!
+                        // Clone target to avoid modifying global state
+                        const fakeTarget = { ...target, reading: correctAnswer };
+                        
+                        return { 
+                            questionHtml: questionText, 
+                            target: fakeTarget,
+                            options: newOptions,
+                            selected: null, 
+                            isClozeTest: false
+                        };
+
+                    } else {
+                        if (target.tests && target.tests.length > 0) {
+                            const randomTest = target.tests[Math.floor(Math.random() * target.tests.length)];
+                            if (!randomTest.includes('<')) {
+                                if (randomTest.includes(target.kanji)) {
+                                    questionText = randomTest.replace(target.kanji, `<span class="test-word-underline">${target.kanji}</span>`);
+                                } else if (randomTest.includes('（　　　　）')) {
+                                    questionText = randomTest;
+                                    isClozeTest = true;
+                                } else {
+                                    questionText = `<span class="test-word-underline">${target.kanji}</span><br>${randomTest}`;
+                                }
+                            } else {
+                                questionText = randomTest;
+                                if (questionText.includes('（　　　　）') || questionText.includes('(___)')) isClozeTest = true;
+                            }
+                        } else if (target.example) {
+                            let firstEx = target.example.split("<br>")[0];
+                            firstEx = firstEx.replace(/\(.*\)/g, "").trim();
+                            
+                            if (firstEx.includes(target.kanji)) {
+                                questionText = firstEx.replace(target.kanji, `<span class="test-word-underline">${target.kanji}</span>`);
+                            } else {
+                                questionText = `<span class="test-word-underline">${target.kanji}</span>`;
+                            }
+                        } else {
+                            questionText = `<span class="test-word-underline">${target.kanji}</span>`;
+                        }
+                    }
+
+                    return { 
+                        questionHtml: questionText, 
+                        target: target,
+                        options: options,
+                        selected: null, 
+                        isClozeTest: isClozeTest
+                    };
+                });
+
+                TestManager.questions.sort(() => 0.5 - Math.random());
+                TestManager.questions = TestManager.questions.slice(0, 20); 
+                
+                TestManager.render();
+                document.getElementById('testModal').classList.add('active');
+            },
+
+            render: function() {
+                const container = document.getElementById('testContainer');
+                container.innerHTML = `
+                    <div class="test-score-sticky">
+                        <span id="testStatusText">Đang làm bài: 0/${TestManager.questions.length} câu</span>
+                        <button class="test-submit-btn" onclick="TestManager.submit()">Nộp bài</button>
+                    </div>
+                `;
+                
+                TestManager.questions.forEach((q, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'test-item';
+                    itemDiv.id = `q-${index}`;
+                    
+                    let optionsHtml = '';
+                    q.options.forEach((opt, optIndex) => {
+                        let answerText = "";
+                        if (q.isClozeTest) {
+                            answerText = opt.kanji; 
+                        } else {
+                            answerText = opt.reading || opt.mean;
+                        }
+                        
+                        optionsHtml += `
+                            <div class="test-option" onclick="TestManager.selectOption(${index}, ${optIndex}, this)">
+                                ${answerText}
+                            </div>
+                        `;
+                    });
+
+                    itemDiv.innerHTML = `
+                        <div class="test-question">
+                            <span style="background:#57606f; color:white; padding:2px 8px; border-radius:10px; font-size:0.8rem; margin-right:5px;">${index + 1}</span> 
+                            ${q.questionHtml}
+                        </div>
+                        <div class="test-grid">
+                            ${optionsHtml}
+                        </div>
+                    `;
+                    container.appendChild(itemDiv);
+                });
+            },
+
+            selectOption: function(qIndex, optIndex, element) {
+                const parent = element.parentElement;
+                const options = parent.querySelectorAll('.test-option');
+                options.forEach(opt => opt.classList.remove('selected'));
+                
+                element.classList.add('selected');
+                
+                TestManager.questions[qIndex].selected = TestManager.questions[qIndex].options[optIndex];
+                
+                const answeredCount = TestManager.questions.filter(q => q.selected).length;
+                document.getElementById('testStatusText').innerText = `Đang làm bài: ${answeredCount}/${TestManager.questions.length} câu`;
+            },
+
+            submit: function() {
+                const answeredCount = TestManager.questions.filter(q => q.selected).length;
+                if (answeredCount < TestManager.questions.length) {
+                    if (!confirm(`Bạn mới làm ${answeredCount}/${TestManager.questions.length} câu. Bạn có chắc muốn nộp bài không?`)) return;
+                }
+
+                let score = 0;
+                TestManager.questions.forEach((q, index) => {
+                    const itemDiv = document.getElementById(`q-${index}`);
+                    const options = itemDiv.querySelectorAll('.test-option');
+                    
+                    options.forEach(opt => opt.onclick = null);
+
+                    q.options.forEach((opt, optIndex) => {
+                        const optEl = options[optIndex];
+                        
+                        if (opt.kanji === q.target.kanji) {
+                            optEl.classList.add('correct');
+                        }
+                        
+                        if (q.selected && q.selected.kanji === opt.kanji && opt.kanji !== q.target.kanji) {
+                            optEl.classList.add('wrong');
+                        }
+                    });
+
+                    if (q.selected && q.selected.kanji === q.target.kanji) {
+                        score++;
+                    } else {
+                        const explainDiv = document.createElement('div');
+                        explainDiv.className = 'test-explanation';
+                        
+                        let content = `<div class="explain-row"><span class="explain-label">Đáp án đúng:</span> <strong>${q.target.kanji}</strong></div>`;
+                        
+                        if (q.target.structure) content += `<div class="explain-row"><span class="explain-label">Cấu trúc:</span> ${q.target.structure}</div>`;
+                        if (q.target.mean) content += `<div class="explain-row"><span class="explain-label">Ý nghĩa:</span> ${q.target.mean}</div>`;
+                        if (q.target.explanation) content += `<div class="explain-row"><span class="explain-label">Giải thích:</span> ${q.target.explanation}</div>`;
+                        
+                        if (q.target.example) {
+                             const exShort = q.target.example.split('<br>')[0];
+                             content += `<div class="explain-row"><span class="explain-label">Ví dụ:</span> ${exShort}</div>`;
+                        }
+                        
+                        explainDiv.innerHTML = content;
+                        itemDiv.appendChild(explainDiv);
+                    }
+                });
+
+                const resultData = {
+                    id: Date.now().toString(),
+                    date: new Date().toLocaleString(),
+                    userName: AppState.currentUserName,
+                    listName: AppState.lists.find(l => l.id === AppState.currentListId)?.name || "Unknown List",
+                    score: score,
+                    total: TestManager.questions.length,
+                    percentage: Math.round((score / TestManager.questions.length) * 100)
+                };
+                
+                AppState.testHistory.unshift(resultData);
+                localStorage.setItem(CONFIG.HISTORY_KEY, JSON.stringify(AppState.testHistory));
+
+                const statusDiv = document.querySelector('.test-score-sticky');
+                statusDiv.innerHTML = `
+                    <div style="font-weight:bold; font-size:1.1rem; color:var(--primary-color);">
+                        Kết quả: ${score}/${TestManager.questions.length} câu đúng
+                    </div>
+                    <button class="btn-secondary" onclick="closeModal('testModal')">Đóng</button>
+                `;
+                statusDiv.scrollIntoView({ behavior: 'smooth' });
+                Utils.showToast(`Bạn đã hoàn thành! Điểm số: ${score}/${TestManager.questions.length}`, "success");
+            }
+        };
+
+        // --- ADMIN MANAGER ---
+        const AdminManager = {
+            open: function() {
+                AdminManager.renderResults();
+                document.getElementById('adminModal').classList.add('active');
+            },
+
+            renderResults: function() {
+                const container = document.getElementById('resultListContainer');
+                if (AppState.testHistory.length === 0) {
+                    container.innerHTML = `<div style="text-align:center; padding:20px; color:#999;">Chưa có dữ liệu kết quả nào.</div>`;
+                    return;
+                }
+
+                let html = `<table style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+                    <thead>
+                        <tr style="background:#f1f2f6; text-align:left;">
+                            <th style="padding:10px;">Ngày giờ</th>
+                            <th style="padding:10px;">Họ tên</th>
+                            <th style="padding:10px;">Bài học</th>
+                            <th style="padding:10px;">Điểm số</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                
+                AppState.testHistory.forEach(item => {
+                    html += `
+                        <tr style="border-bottom:1px solid #eee;">
+                            <td style="padding:10px;">${item.date}</td>
+                            <td style="padding:10px; font-weight:bold; color:var(--primary-color);">${item.userName}</td>
+                            <td style="padding:10px;">${item.listName}</td>
+                            <td style="padding:10px; font-weight:bold;">${item.score}/${item.total} (${item.percentage}%)</td>
+                        </tr>
+                    `;
+                });
+
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+            },
+
+            export: function() {
+                const dataStr = JSON.stringify(AppState.testHistory);
+                navigator.clipboard.writeText(dataStr).then(() => {
+                    alert("Đã sao chép dữ liệu kết quả vào bộ nhớ đệm!\nBạn có thể gửi mã này cho giáo viên/quản lý.");
+                }).catch(err => {
+                    alert("Lỗi khi sao chép: " + err);
+                });
+            },
+
+            openImportModal: function() {
+                document.getElementById('importDataModal').classList.add('active');
+                document.getElementById('importDataInput').value = "";
+                document.getElementById('importDataInput').focus();
+            },
+
+            submitImport: function() {
+                const dataStr = document.getElementById('importDataInput').value;
+                if (!dataStr) {
+                    Utils.showToast("Vui lòng nhập dữ liệu!", "error");
+                    return;
+                }
+                
+                try {
+                    const data = JSON.parse(dataStr);
+                    if (Array.isArray(data)) {
+                        const currentIds = new Set(AppState.testHistory.map(item => item.id));
+                        const newItems = data.filter(item => !currentIds.has(item.id));
+                        
+                        if (newItems.length > 0) {
+                            AppState.testHistory = [...newItems, ...AppState.testHistory];
+                            localStorage.setItem(CONFIG.HISTORY_KEY, JSON.stringify(AppState.testHistory));
+                            AdminManager.renderResults();
+                            Utils.showToast(`Đã nhập thành công ${newItems.length} kết quả mới!`, "success");
+                            closeModal('importDataModal');
+                        } else {
+                            Utils.showToast("Không có dữ liệu mới nào (trùng lặp)!", "info");
+                        }
+                    } else {
+                        Utils.showToast("Dữ liệu không hợp lệ (phải là mảng JSON)!", "error");
+                    }
+                } catch (e) {
+                    Utils.showToast("Lỗi định dạng JSON!", "error");
+                }
+            },
+
+            clear: function() {
+                if (confirm("Bạn có chắc chắn muốn xóa TOÀN BỘ lịch sử kết quả không?")) {
+                    AppState.testHistory = [];
+                    localStorage.setItem(CONFIG.HISTORY_KEY, JSON.stringify(AppState.testHistory));
+                    AdminManager.renderResults();
+                }
+            }
+        };
+
+        // --- NOTE LOGIC ---
+        const performSaveNote = Utils.debounce(() => {
+            const word = AppState.currentWords[AppState.currentIndex];
+            if (word) {
+                word.note = DOM.noteInput.value;
+                StorageManager.saveLists();
+            }
+        }, 500);
+
+        function saveNote() { performSaveNote(); }
+
+        // --- GLOBAL FUNCTIONS (Legacy Support & Helpers) ---
+        function toggleSidebar() { UIManager.toggleSidebar(); }
+        function closeSidebar() { UIManager.closeSidebar(); }
+        function switchCategory(cat) { ListManager.switchCategory(cat); }
+        function deleteList(id, event) { ListManager.delete(id, event); }
+        
+        function prevCard() { CardManager.prev(); }
+        function nextCard() { CardManager.next(); }
+        function flipCard() { CardManager.flip(); }
+        function switchTab(tab, event) { CardManager.switchTab(tab, event); }
+        function setStatusAndNext(status) { CardManager.setStatusAndNext(status); }
+        
+        function showToast(msg, type) { Utils.showToast(msg, type); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function toggleHelp() {
+            const el = document.getElementById('helpContent');
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
         }
 
+
+        /* --- REVIEW & SHUFFLE --- */
         let reviewCandidates = [];
 
         function filterReviewWords() {
-            const originalList = lists.find(l => l.id === currentListId);
+            const originalList = AppState.lists.find(l => l.id === AppState.currentListId);
             if (!originalList) return;
 
-            // Lọc từ Δ và X
             reviewCandidates = originalList.words.filter(w => w.status === 'Δ' || w.status === 'X');
             
             if (reviewCandidates.length === 0) {
-                alert("Bạn đã thuộc hết các từ (O) rồi! Giỏi quá!");
+                Utils.showToast("Bạn đã thuộc hết các từ (O) rồi! Giỏi quá!", "success");
                 return;
             }
 
-            // Hiển thị danh sách lên Modal
             const container = document.getElementById('reviewListContainer');
             container.innerHTML = '';
             
@@ -931,228 +2628,51 @@
         function startReviewSession() {
             if (reviewCandidates.length === 0) return;
 
-            currentWords = reviewCandidates;
-            currentIndex = 0;
-            isReviewMode = true;
+            AppState.currentWords = reviewCandidates;
+            AppState.currentIndex = 0;
+            AppState.isReviewMode = true;
             
             closeModal('reviewModal');
             document.getElementById('btnResetFilter').style.display = 'inline-block';
             
-            updateCardDisplay(currentWords[0]);
-            updateCounter();
+            CardManager.updateDisplay(AppState.currentWords[0]);
+            UIManager.updateCounter();
         }
 
         function resetFilter() {
-            const originalList = lists.find(l => l.id === currentListId);
-            if (originalList) {
-                currentWords = originalList.words;
-                currentIndex = 0;
-                isReviewMode = false;
-                document.getElementById('btnResetFilter').style.display = 'none';
-                updateCardDisplay(currentWords[0]);
-                updateCounter();
-            }
+            ListManager.select(AppState.currentListId);
         }
 
-        // --- MODAL & IMPORT ---
-        
-        function openBulkModal() { document.getElementById('bulkModal').classList.add('active'); document.getElementById('listNameInput').focus(); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        function parseLine(line) {
-            if (!line || line.trim() === "") return null;
-            const pipeParts = line.split('|');
-            let result = {};
-
-            if (pipeParts.length >= 3) {
-                result = {
-                    kanji: pipeParts[0].trim(),
-                    reading: pipeParts[1].trim(),
-                    mean: pipeParts[2].trim(),
-                    example: pipeParts.slice(3).join('|').trim().replace(/\n/g, "<br>")
-                };
-            } else {
-                let mainPart = line;
-                let example = "";
-                if (pipeParts.length === 2 && (pipeParts[0].includes('=') || pipeParts[0].includes(','))) {
-                     mainPart = pipeParts[0].trim(); example = pipeParts[1].trim();
-                }
-                
-                let kanji = "", reading = "", mean = "";
-                if (mainPart.includes(',')) {
-                    const idx = mainPart.indexOf(',');
-                    const left = mainPart.substring(0, idx).trim(); 
-                    mean = mainPart.substring(idx + 1).trim();     
-                    if (left.includes('(')) {
-                        const op = left.indexOf('('); const cp = left.lastIndexOf(')');
-                        kanji = left.substring(0, op).trim(); reading = left.substring(op + 1, cp).trim();
-                    } else {
-                        const sp = left.lastIndexOf(' ');
-                        kanji = sp !== -1 ? left.substring(0, sp).trim() : left; reading = sp !== -1 ? left.substring(sp + 1).trim() : "";
-                    }
-                } else if (mainPart.includes('=')) {
-                    const parts = mainPart.split('=');
-                    const left = parts[0].trim(); mean = parts[1].trim();
-                    const sp = left.lastIndexOf(' ');
-                    kanji = sp !== -1 ? left.substring(0, sp).trim() : left; reading = sp !== -1 ? left.substring(sp + 1).trim() : "";
-                } else { return null; }
-                result = { kanji, reading, mean, example: example.replace(/\n/g, "<br>") };
-            }
-            result.status = ""; result.note = "";
-            return result;
-        }
-
-        function processBulkImport() {
-            const listName = document.getElementById('listNameInput').value.trim() || `Bài học ${new Date().toLocaleDateString()}`;
-            const text = document.getElementById('bulkInput').value;
-            if (!text.trim()) { alert("Vui lòng nhập nội dung!"); return; }
-            
-            const lines = text.split('\n');
-            const newWords = [];
-            let lastIdx = -1;
-
-            lines.forEach(line => {
-                const tLine = line.trim();
-                if (!tLine) return;
-
-                // 1. Nếu dòng bắt đầu bằng "Ví dụ:", "Ex:", "例：" -> Thêm vào ví dụ
-                const exampleRegex = /^(ví dụ:|ex:|example:|例[:：])/i;
-                if (lastIdx !== -1 && exampleRegex.test(tLine)) {
-                    const ex = tLine.replace(exampleRegex, '').trim();
-                    if (newWords[lastIdx].example) newWords[lastIdx].example += "<br>" + ex;
-                    else newWords[lastIdx].example = ex;
-                    return;
-                }
-
-                // 2. Ưu tiên: Nếu dòng chứa ký tự phân cách mạnh (| hoặc =) -> Xử lý là TỪ MỚI
-                if (tLine.includes('|') || tLine.includes('=')) {
-                     const word = parseLine(line);
-                     if (word) { newWords.push(word); lastIdx = newWords.length - 1; return; }
-                }
-
-                // 3. Ưu tiên: Nếu dòng bắt đầu bằng số (1., 2, 1) -> Xử lý là VÍ DỤ (nếu đã có từ trước đó)
-                // (Để tránh bị nhầm là từ mới nếu dòng ví dụ có chứa dấu phẩy)
-                if (lastIdx !== -1 && /^\d+([\.\)\s]|$)/.test(tLine)) {
-                     if (newWords[lastIdx].example) newWords[lastIdx].example += "<br>" + tLine;
-                     else newWords[lastIdx].example = tLine;
-                     return;
-                }
-
-                // 4. Thử parse dòng thành từ mới (dành cho trường hợp dùng dấu phẩy hoặc format khác)
-                const word = parseLine(line);
-                if (word) { 
-                    newWords.push(word); 
-                    lastIdx = newWords.length - 1; 
-                } else if (lastIdx !== -1) {
-                    // 5. Fallback: Coi là dòng tiếp theo của ví dụ/ghi chú
-                    if (newWords[lastIdx].example) newWords[lastIdx].example += "<br>" + tLine;
-                    else newWords[lastIdx].example = tLine;
-                }
-            });
-
-            if (newWords.length > 0) {
-                const newId = createList(listName, newWords);
-                selectList(newId);
-                closeModal('bulkModal');
-                alert(`Đã tạo bài học "${listName}" với ${newWords.length} từ!`);
-            } else { alert("Không tìm thấy từ vựng hợp lệ nào!"); }
-        }
-        
-        /* --- TEST MODE LOGIC --- */
-        let testQuestions = [];
-        let currentTestIndex = 0;
-        let testScore = 0;
-
-        function startTestMode() {
-            const originalList = lists.find(l => l.id === currentListId);
-            if (!originalList || originalList.words.length < 4) {
-                alert("Cần ít nhất 4 từ vựng để tạo bài kiểm tra!");
+        function shuffleWords() {
+            if (!AppState.currentWords || AppState.currentWords.length === 0) {
+                Utils.showToast("Danh sách trống!", "error");
                 return;
             }
-
-            // Create questions
-            testQuestions = originalList.words.map(target => {
-                // Find 3 distractors
-                const others = originalList.words.filter(w => w.kanji !== target.kanji);
-                // Shuffle others to get random distractors
-                const shuffledOthers = others.sort(() => 0.5 - Math.random());
-                const distractors = shuffledOthers.slice(0, 3);
-                
-                // Combine and shuffle options
-                const options = [target, ...distractors].sort(() => 0.5 - Math.random());
-                
-                return {
-                    question: target,
-                    options: options
-                };
-            });
-
-            // Shuffle questions order
-            testQuestions.sort(() => 0.5 - Math.random());
             
-            // Limit to 10 or length
-            testQuestions = testQuestions.slice(0, 20); // Max 20 questions
-
-            currentTestIndex = 0;
-            testScore = 0;
-            showTestQuestion();
-            document.getElementById('testModal').classList.add('active');
-        }
-
-        function showTestQuestion() {
-            if (currentTestIndex >= testQuestions.length) {
-                // End of test
-                document.getElementById('testContainer').innerHTML = `
-                    <div class="test-question">Kết thúc!</div>
-                    <div class="test-score">Bạn đạt: ${testScore}/${testQuestions.length} câu đúng</div>
-                    <div style="font-size: 5rem; margin: 20px;">
-                        ${testScore === testQuestions.length ? '💯' : testScore > testQuestions.length/2 ? '🎉' : '😅'}
-                    </div>
-                `;
-                return;
+            for (let i = AppState.currentWords.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [AppState.currentWords[i], AppState.currentWords[j]] = [AppState.currentWords[j], AppState.currentWords[i]];
             }
-
-            const q = testQuestions[currentTestIndex];
-            document.getElementById('testScore').innerText = `Câu ${currentTestIndex + 1}/${testQuestions.length} - Điểm: ${testScore}`;
-            document.getElementById('testQuestion').innerHTML = `<span class="kanji-bg">${q.question.kanji}</span>`;
             
-            const optionsContainer = document.getElementById('testOptions');
-            optionsContainer.innerHTML = '';
-
-            q.options.forEach(opt => {
-                const div = document.createElement('div');
-                div.className = 'test-option';
-                div.innerText = opt.mean;
-                div.onclick = () => checkTestAnswer(div, opt, q.question);
-                optionsContainer.appendChild(div);
-            });
-        }
-
-        function checkTestAnswer(element, selected, correct) {
-            // Disable all clicks
-            const options = document.querySelectorAll('.test-option');
-            options.forEach(opt => opt.onclick = null);
-
-            if (selected.kanji === correct.kanji) {
-                element.classList.add('correct');
-                testScore++;
-            } else {
-                element.classList.add('wrong');
-                // Highlight correct one
-                options.forEach(opt => {
-                    if (opt.innerText === correct.mean) {
-                        opt.classList.add('correct');
-                    }
-                });
+            AppState.currentIndex = 0;
+            CardManager.updateDisplay(AppState.currentWords[0]);
+            UIManager.updateCounter();
+            Utils.showToast("Đã xáo trộn danh sách!", "success");
+            
+            if (DOM.card.classList.contains('is-flipped')) {
+                DOM.card.classList.remove('is-flipped');
             }
-
-            setTimeout(() => {
-                currentTestIndex++;
-                showTestQuestion();
-            }, 1500);
         }
 
-
+        // --- MOBILE DEBUGGING (Eruda) ---
+        // Thêm ?debug=true vào URL để bật console trên điện thoại
+        if (new URLSearchParams(window.location.search).get('debug')) {
+            var script = document.createElement('script');
+            script.src = "//cdn.jsdelivr.net/npm/eruda";
+            document.body.appendChild(script);
+            script.onload = function () { eruda.init() }
+        }
     </script>
 </body>
+
 </html>
